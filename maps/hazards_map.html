@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyGreenCanton: Hazard Map</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="all things environmental for the town of Canton, Massachusetts" />
+        <meta name="author" content="Arthur Fisher" />
+        <link rel="Stylesheet" href="../styles/main.css"/>
+        <link rel="Stylesheet" href="../styles/maps_styles.css"/>
+        <link rel="shortcut icon" href="../images/favicon.ico"/>       
+        <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC6VuEruxrPzFZ0BeCQ6EjMss9c1Lqtpo&sensor=false">    </script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/arcgislink/src/arcgislink.js"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/JavaScript" src="../js/getEcoTip.js"></script>
+        <script type="text/javascript" src="http://closure-library.googlecode.com/svn/trunk/closure/goog/base.js"></script>
+        <script type="text/JavaScript" src="../js/hazardsMap.js"></script>   
+    </head>
+
+    <body onload="initialize();">
+        <header>
+            <!--small utility navigation bar-->
+            <nav id="utils">
+                <ul>
+                    <li><a href="../single_pages/author.html">About the Author</a></li>
+                    <li><a href="../php_pages/contact.php">Contact Us</a></li>
+                </ul>
+            </nav>
+            
+            <h1><img src="../images/leaves1.jpg" width="60" height="60" alt="leaf image"/>My<span>Green</span>Canton</h1>
+            
+            <!--main navigation bar-->
+            <nav id="nav_bar">
+                <ul>
+                    <li><a href="../home.html">Home</a></li>
+                    <li><a href="../php_pages/hazards.php">Hazards</a></li>
+                    <li><a href="../php_pages/flora_fauna.php">Flora & Fauna</a></li>
+                    <li><a href="../single_pages/cleanEnergy.html">Clean Energy</a></li>
+                    <li><a href="../single_pages/protected.html">Protected Areas</a></li>                
+                    <li><a href="../maps/maps.html">Maps</a></li>
+                    <li><a href="../single_pages/kids.html">For Kids</a></li>
+                    <li><a href="../php_pages/comments.php">Comments</a></li>
+                    <li><a href="../single_pages/resources.html">Resources</a></li>
+                </ul>
+            </nav>
+            
+        </header>
+        
+        <section>
+            <span class="crumbs"> <a href="../home.html">Home </a>&gt; <a href="maps.html">Maps </a>&gt; Hazards Map</span><br>
+            <h2>Potential Environmental Hazards in Canton, MA:</h2>
+<!--Google Map-->
+            <div id="gmap"></div>
+            
+            <div id="legend">
+            <h3>Legend</h3>
+            <input type="radio" name="hazards" checked id="All" value="all" /><label>All Facilities</label><br>
+            <input type="radio" name="hazards" value="1" /><label title="The Air Facility System (AFS) contains compliance and permit data for stationary sources regulated by EPA, state and local air pollution agencies.">AIRS_AFS</label><img src="../images/legend/airs.png" height="15" /><br>
+            <input type="radio" name="hazards" value="7" /><label title="Superfund is the common name for the Comprehensive Environmental Response, Compensation, and Liability Act of 1980 (CERCLA), a United States federal law designed to clean up sites contaminated with hazardous substances.">CERCLIS</label><img src="../images/legend/cerclis.png" height="15" /><br>
+            <input type="radio" name="hazards" value="10" /><label title="The Integrated Compliance Information System (ICIS) is a web-based system that provides information for the federal enforcement and compliance (FE&amp;C) and the National Pollutant Discharge Elimination System (NPDES) programs.">ICIS</label><img src="../images/legend/icis.png" height="25" /><br>
+            <input type="radio" name="hazards" value="11" /><label title="The National Compliance Data Base System (NCDB) tracks regional compliance and enforcement activity, for the National Pesticides and Toxic Substances Compliance and Enforcement program.">NCDB</label><img src="../images/legend/ncdb.png" height="25" /><br>
+            <input type="radio" name="hazards" value="13" /><label title="The National Emissions Inventory (NEI) is a comprehensive and detailed estimate of air emissions of both Criteria and Hazardous air pollutants.">NEI</label><img src="../images/legend/nei.png" height="15" /><br>
+            <input type="radio" name="hazards" value="15" /><label title="As authorized by the Clean Water Act, the National Pollutant Discharge Elimination System (NPDES) permit program controls water pollution by regulating point sources that discharge pollutants into waters of the United States.">PCS NPDES</label><img src="../images/legend/pcs.png" height="15" /><br>
+            <input type="radio" name="hazards" value="20" /><label title="The Resource Conservation and Recovery Act (RCRA), enacted in 1976, is the principal federal law in the United States governing the disposal of solid waste and hazardous waste.">RCRA ACTIVE</label><img src="../images/legend/rcra.png" height="15" /><br>
+            <input type="radio" name="hazards" value="26" /><label title="The Toxics Release Inventory (TRI) tracks the management of over 650 toxic chemicals that pose a threat to human health and the environment.">TRI</label><img src="../images/legend/tri.png" height="15" /><br>
+            <input type="radio" name="hazards" value="none" /><label>None</label><br>
+            <span id="hoverNote">Hover over the acronyms above for hazard type definitions.</span>
+            </div> 
+
+            <span class="sources"><strong>Data Sources: </strong>EPA Facility Registry System (Facilities), FEMA (Town Boundaries)</span>
+            <p class="link">Also see our <a href="../php_pages/hazards.php">Environmental Hazards Page</a></p>
+        
+        </section>
+
+    <footer>
+		<span><strong>Today's Eco Tip: </strong><span id="ecoTip"><script>showTip();</script> </span>
+	</footer>
+
+    </body>
+</html>

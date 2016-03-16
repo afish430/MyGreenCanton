@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyGreenCanton: Maps</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="all things environmental for the town of Canton, Massachusetts" />
+        <meta name="author" content="Arthur Fisher" />
+        <link rel="Stylesheet" href="../styles/main.css"/>
+        <link rel="Stylesheet" href="../styles/maps_styles.css"/>
+        <link rel="shortcut icon" href="../images/favicon.ico"/>
+        <script type="text/JavaScript" src="../js/getEcoTip.js"></script>
+    </head>
+    <body>
+        <header>
+            <!--small utility navigation bar-->
+            <nav id="utils">
+                <ul>
+                    <li><a href="../single_pages/author.html">About the Author</a></li>
+                    <li><a href="../php_pages/contact.php">Contact Us</a></li>
+                </ul>
+            </nav>
+            
+            <h1><img src="../images/leaves1.jpg" width="60" height="60"/>My<span>Green</span>Canton</h1>
+            
+            <!--main navigation bar-->
+            <nav id="nav_bar">
+                <ul>
+                    <li><a href="../home.html">Home</a></li>
+                    <li><a href="../php_pages/hazards.php">Hazards</a></li>
+                    <li><a href="../php_pages/flora_fauna.php">Flora & Fauna</a></li>
+                    <li><a href="../single_pages/cleanEnergy.html">Clean Energy</a></li>
+                    <li><a href="../single_pages/protected.html">Protected Areas</a></li>                
+                    <li class="current">Maps</li>
+                    <li><a href="../single_pages/kids.html">For Kids</a></li>
+                    <li><a href="../php_pages/comments.php">Comments</a></li>
+                    <li><a href="../single_pages/resources.html">Resources</a></li>
+                </ul>
+            </nav>
+            
+        </header>
+        
+        <section>
+            <h2>Maps</h2>
+            
+            <aside>
+                    <h2>About Maps:</h2>
+                    <p>A picture is worth a thousand words, and maps provide geographic context to environmental data
+                    in a way  that can't be matched by text or tabular formats.</p>
+                    <img src="../images/webmap.jpg" alt="web mapping image" id="webmapImg" height="110">
+                    <p>The explosion of interactive web mapping has revolutionized
+                    spatial data visualization in recent years. <em>MyGreenCanton</em> is taking advantage of some of these great
+                    web mapping APIs in order to display some of Canton's environmental data geographically.</p>
+            </aside>
+            
+            <div>
+                <h3><a href="../maps/hazards_map.html">Environmental Hazards in Canton</a></h3>
+                This map displays the potential environmental hazards in Canton
+                through the use of a map service provided by the EPA. Sites listed indicate they are registered as places subject to environmental regulation or of
+                    environmental interest and do not independently mean that a violation or dangerous emission has occurred.
+                    (Powered by Google Maps)
+                
+                <h3><a href="../maps/protected_map.html">Protected Areas in Canton</a></h3>
+                This map shows all protected areas in the Town of Canton. These include parks, wildlife sanctuaries,
+                and other areas in town that have been designated as protected places. (Powered by Google Maps)
+                
+                <h3><a href="../maps/comparison_map.html">How Does Canton Compare?</a></h3>
+                A map of town boundaries in Norfolk County, color coded by their ratings in various pollution indices including Carbon Monoxide, Ozone, and Particulate Matter.
+                A dropdown list allows users to change which index is displayed.
+                See how Canton compares to its neighboring towns in each of these categories. (Powered by Leaflet and CloudMade)
+            </div>
+        </section>
+
+    <footer>
+		<span><strong>Today's Eco Tip: </strong><span id="ecoTip"><script>showTip();</script> </span>
+	</footer>
+
+    </body>
+</html>

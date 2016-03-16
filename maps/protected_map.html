@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyGreenCanton: Protected Areas Map</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="all things environmental for the town of Canton, Massachusetts" />
+        <meta name="author" content="Arthur Fisher" />
+        <link rel="Stylesheet" href="../styles/main.css"/>
+        <link rel="Stylesheet" href="../styles/maps_styles.css"/>
+        <link rel="shortcut icon" href="../images/favicon.ico"/>       
+        <script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC6VuEruxrPzFZ0BeCQ6EjMss9c1Lqtpo&sensor=false">    </script>
+        <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/arcgislink/src/arcgislink.js"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/JavaScript" src="../js/getEcoTip.js"></script>
+        <script type="text/javascript" src="http://closure-library.googlecode.com/svn/trunk/closure/goog/base.js"></script>
+        <script type="text/JavaScript" src="../js/protectedMap.js"></script> 
+    </head>
+
+    <body onload="initialize();">
+        <header>
+            <!--small utility navigation bar-->
+            <nav id="utils">
+                <ul>
+                    <li><a href="../single_pages/author.html">About the Author</a></li>
+                    <li><a href="../php_pages/contact.php">Contact Us</a></li>
+                </ul>
+            </nav>
+            
+            <h1><img src="../images/leaves1.jpg" width="60" height="60"/>My<span>Green</span>Canton</h1>
+            
+            <!--main navigation bar-->
+            <nav id="nav_bar">
+                <ul>
+                    <li><a href="../home.html">Home</a></li>
+                    <li><a href="../php_pages/hazards.php">Hazards</a></li>
+                    <li><a href="../php_pages/flora_fauna.php">Flora & Fauna</a></li>
+                    <li><a href="../single_pages/cleanEnergy.html">Clean Energy</a></li>
+                    <li><a href="../single_pages/protected.html">Protected Areas</a></li>                
+                    <li><a href="../maps/maps.html">Maps</a></li>
+                    <li><a href="../single_pages/kids.html">For Kids</a></li>
+                    <li><a href="../php_pages/comments.php">Comments</a></li>
+                    <li><a href="../single_pages/resources.html">Resources</a></li>
+                </ul>
+            </nav>
+            
+        </header>
+        
+        <section class="wide">
+            <span class="crumbs"> <a href="../home.html">Home </a>&gt; <a href="maps.html">Maps </a>&gt; Protected Areas Map</span><br>
+            <h2 id="protectedH2">Protected Areas in Canton, MA:</h2>
+            <span id="viewBy"><strong>View By:</strong>&nbsp;<input type="radio" name="radioViewBy" value="owner" checked/><label for="radioViewBy">Owner</label>&nbsp;<input type="radio" name="radioViewBy" value="status" /><label for="radioViewBy">Protection Status</label></span>
+<!--Google Map-->
+            <div id="gmap2">   
+            </div>
+
+            <div id="legend2">
+            <h3>Legend</h3>
+                <img src="../images/legend/protected.png" width="245"/>
+            </div> 
+            <span class="sources"><strong>Data Sources: </strong>USGS (Protected Areas), FEMA (Town Boundaries)</span>
+            <p class="link">Also see our <a href="../single_pages/protected.html">Protected Areas Page</a></p>
+        </section>
+
+    <footer>
+		<span><strong>Today's Eco Tip: </strong><span id="ecoTip"><script>showTip();</script> </span>
+	</footer>
+
+    </body>
+</html>

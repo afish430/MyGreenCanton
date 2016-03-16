@@ -1,0 +1,389 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>MyGreenCanton: How Does Canton Compare?</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="description" content="all things environmental for the town of Canton, Massachusetts" />
+        <meta name="author" content="Arthur Fisher" />
+        <link rel="Stylesheet" href="../styles/main.css"/>
+        <link rel="Stylesheet" href="../styles/maps_styles.css"/>
+        <link rel="shortcut icon" href="../images/favicon.ico"/>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script type="text/JavaScript" src="../js/getEcoTip.js"></script>  
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+        <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+	<script type="text/javascript" src="../js/Norfolk_Pollution.js"></script>
+        <script type="text/javascript">
+            function showNationalAverage(value){
+                var $natAvg = $("#nationalAverage");
+                switch (value){
+                    case "AQI":
+                        $natAvg.html("The 2010 US average Air Quality Index was <strong>32.0</strong>.");
+                        break;
+                    case "Ozone":
+                        $natAvg.html("The 2010 US average Ozone level was <strong>28.3 ppb</strong>. <br><br> (A value of zero indicates that an ozone level was not available for a town.)");
+                        break;
+                    case "CarbonMonoxide":
+                        $natAvg.html("The 2010 US average Carbon Monoxide level was <strong>0.334 ppb</strong>.");
+                        break;
+                    case "NitrogenDioxide":
+                        $natAvg.html("The 2010 US average Nitrogen Dioxide level was <strong>9.4 ppb</strong>.");
+                        break;
+                    case "ParticulateMatter":
+                        $natAvg.html("The 2010 US average Particulate Matter 2.5 level was <strong>9.6 µ/m3</strong>.");
+                        break;
+                    default:
+                        $natAvg.html("An error has occurred.");                        
+                }
+            }
+                    
+        </script>
+	<style>
+		#map {
+			width: 700px;
+			height: 500px;
+                        border: 1px solid darkgreen;
+                        z-index: 1;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+                        z-index: 2;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+                
+                footer{                   
+                    z-index: 99;
+                }
+	</style>
+        
+    </head>
+
+    <body>
+        <header>
+            <!--small utility navigation bar-->
+            <nav id="utils">
+                <ul>
+                    <li><a href="../single_pages/author.html">About the Author</a></li>
+                    <li><a href="../php_pages/contact.php">Contact Us</a></li>
+                </ul>
+            </nav>
+            
+            <h1><img src="../images/leaves1.jpg" width="60" height="60" alt="leaf image"/>My<span>Green</span>Canton</h1>
+            
+            <!--main navigation bar-->
+            <nav id="nav_bar">
+                <ul>
+                    <li><a href="../home.html">Home</a></li>
+                    <li><a href="../php_pages/hazards.php">Hazards</a></li>
+                    <li><a href="../php_pages/flora_fauna.php">Flora & Fauna</a></li>
+                    <li><a href="../single_pages/cleanEnergy.html">Clean Energy</a></li>
+                    <li><a href="../single_pages/protected.html">Protected Areas</a></li>                
+                    <li><a href="../maps/maps.html">Maps</a></li>
+                    <li><a href="../single_pages/kids.html">For Kids</a></li>
+                    <li><a href="../php_pages/comments.php">Comments</a></li>
+                    <li><a href="../single_pages/resources.html">Resources</a></li>
+                </ul>
+            </nav>
+            
+        </header>
+        
+        <section class="wide">
+            <span class="crumbs"> <a href="../home.html">Home </a>&gt; <a href="maps.html">Maps </a>&gt; Comparison Map</span><br>
+            <h2>How Does Canton Compare?</h2>
+<!--Leaflet Map-->
+            <div id="map"></div>
+            
+            <div id="selector">
+                <h4>Choose a Pollution Category:</h4>
+                
+                <select onchange="createNewMap(this.value), showNationalAverage(this.value)">
+                    <option value="AQI" selected>Air Quality Index</option>
+                    <option value="Ozone">Ozone</option>
+                    <option value="CarbonMonoxide">Carbon Monoxide</option>
+                    <option value="NitrogenDioxide">Nitrogen Dioxide</option>
+                    <option value="ParticulateMatter">Particulate Matter</option>
+                </select>
+                
+                <p><strong>National Average:</strong><br>
+                    <span id="nationalAverage">The 2010 US average Air Quality Index was <strong>32.0</strong>.</span>
+                </p>
+
+            </div>
+
+            <span class="sources"><strong>Data Sources: </strong> <a href="http://www.city-data.com" target="blank">City Data</a> (2010 Pollution Levels); MassGIS (Town Boundaries)</span>
+        </section>
+
+	<script type="text/javascript">
+
+                var myAttribute= "AQI";
+                //Leaflet map script
+		createLeafMap(myAttribute);
+                
+                function createNewMap(myAttribute){
+                    $('#map').remove();
+                    $('#selector').before("<div id='map'></div>");
+                    createLeafMap(myAttribute);
+                    //alert("created");
+                }
+                
+                
+                function createLeafMap(myAttribute){
+                    var map = L.map('map').setView([42.18, -71.125], 10);              
+
+                    var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+                            attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+                            key: '1d557e82625d4a9bb4fa89634f128da5',
+                            styleId: 22677
+                    }).addTo(map);
+
+
+                    // control that shows town info on hover
+                    var info = L.control();
+
+                    info.onAdd = function (map) {
+                            this._div = L.DomUtil.create('div', 'info');
+                            this.update();
+                            return this._div;
+                    };
+
+
+                    info.update = function (props) {
+                            if(myAttribute=="AQI"){this._div.innerHTML = '<h4>Norfolk County: Air Quality Index</h4>' +(props ?
+                                    '<b>' + props.TOWN + '</b><br />' + props.AQI
+                                    : 'Hover over a town');
+                            }
+                            else if(myAttribute=="Ozone"){this._div.innerHTML = '<h4>Norfolk County: Ozone Level</h4>' +(props ?
+                                    '<b>' + props.TOWN + '</b><br />' + props.Ozone
+                                    : 'Hover over a town');
+                            }
+
+                             else if(myAttribute=="CarbonMonoxide"){this._div.innerHTML = '<h4>Norfolk County: Carbon Monoxide Level</h4>' +(props ?
+                                    '<b>' + props.TOWN + '</b><br />' + props.CO
+                                    : 'Hover over a town');
+                            }
+                             else if(myAttribute=="NitrogenDioxide"){this._div.innerHTML = '<h4>Norfolk County: Nitrogen Dioxide Level</h4>' +(props ?
+                                    '<b>' + props.TOWN + '</b><br />' + props.NO2
+                                    : 'Hover over a town');
+                            }
+                            else if(myAttribute=="ParticulateMatter"){this._div.innerHTML = '<h4>Norfolk County: Particulate Matter Level</h4>' +(props ?
+                                    '<b>' + props.TOWN + '</b><br />' + props.PM25
+                                    : 'Hover over a town');
+                            }                            
+                    };
+
+                    info.addTo(map);
+
+                    //object to set color ranges for indices
+                    var ranges = {
+                        r0: 29.4,
+                        r1: 29.8,
+                        r2: 30.05,
+                        r3: 30.7,
+                        r4: 31.45,
+                        r5: 42.7
+                    };
+                    
+                    //set ranges based on pollution index chosen
+                    switch(myAttribute){
+                        case "AQI":
+                            ranges.r0 = 29.4;
+                            ranges.r1 = 29.8;
+                            ranges.r2 = 30.05;
+                            ranges.r3 = 30.7;
+                            ranges.r4 = 31.45;
+                            ranges.r5 = 42.7;
+                            break;
+                        case "Ozone":
+                            ranges.r0 = 23.8;
+                            ranges.r1 = 24.0;
+                            ranges.r2 = 24.7;
+                            ranges.r3 = 25.3;
+                            ranges.r4 = 26.0;
+                            ranges.r5 = 29.6;
+                            break; 
+                        case "CarbonMonoxide":
+                            ranges.r0 = .303;
+                            ranges.r1 = .313;
+                            ranges.r2 = .315;
+                            ranges.r3 = .32;
+                            ranges.r4 = .346;
+                            ranges.r5 = .408;
+                            break; 
+                        case "NitrogenDioxide":
+                            ranges.r0 = 12.25;
+                            ranges.r1 = 12.6;
+                            ranges.r2 = 13.15;
+                            ranges.r3 = 13.7;
+                            ranges.r4 = 13.9;
+                            ranges.r5 = 15.1;
+                            break;
+                        case "ParticulateMatter":
+                            ranges.r0 = 8.605;
+                            ranges.r1 = 8.75;
+                            ranges.r2 = 8.895;
+                            ranges.r3 = 9.15;
+                            ranges.r4 = 9.375;
+                            ranges.r5 = 13.0;
+                            break;                             
+                    }
+                    
+                    // get color depending on pollution value
+                    function getColor(d) {
+                            return d > ranges.r5  ? '#B10026' :
+                                   d > ranges.r4  ? '#E31A1C' :
+                                   d > ranges.r3  ? '#FC4E2A' :
+                                   d > ranges.r2   ? '#FD8D3C' :
+                                   d > ranges.r1   ? '#FEB24C' :
+                                   d > ranges.r0   ? '#FED976' :
+                                              '#FFFFB2';
+                    }
+
+                    function style(feature) {
+                        if(myAttribute=="AQI"){
+                            return {
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    dashArray: '3',
+                                    fillOpacity: 0.7,
+                                    fillColor: getColor(feature.properties.AQI)
+                            };
+                        }
+                        else if(myAttribute=="Ozone"){
+                            return {
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    dashArray: '3',
+                                    fillOpacity: 0.7,
+                                    fillColor: getColor(feature.properties.Ozone)
+                            };
+                        }
+                         else if(myAttribute=="CarbonMonoxide"){
+                            return {
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    dashArray: '3',
+                                    fillOpacity: 0.7,
+                                    fillColor: getColor(feature.properties.CO)
+                            };
+                        }
+                        else if(myAttribute=="NitrogenDioxide"){
+                            return {
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    dashArray: '3',
+                                    fillOpacity: 0.7,
+                                    fillColor: getColor(feature.properties.NO2)
+                            };
+                        }      
+                        else if(myAttribute=="ParticulateMatter"){
+                            return {
+                                    weight: 2,
+                                    opacity: 1,
+                                    color: 'white',
+                                    dashArray: '3',
+                                    fillOpacity: 0.7,
+                                    fillColor: getColor(feature.properties.PM25)
+                            };
+                        }                        
+                    }
+
+                    function highlightFeature(e) {
+                            var layer = e.target;
+
+                            layer.setStyle({
+                                    weight: 5,
+                                    color: '#666',
+                                    dashArray: '',
+                                    fillOpacity: 0.7
+                            });
+
+                            if (!L.Browser.ie && !L.Browser.opera) {
+                                    layer.bringToFront();
+                            }
+
+                            info.update(layer.feature.properties);
+                    }
+
+                    var geojson;
+
+                    function resetHighlight(e) {
+                            geojson.resetStyle(e.target);
+                            info.update();
+                    }
+
+                    function zoomToFeature(e) {
+                            map.fitBounds(e.target.getBounds());
+                    }
+
+                    function onEachFeature(feature, layer) {
+                            layer.on({
+                                    mouseover: highlightFeature,
+                                    mouseout: resetHighlight,
+                                    click: zoomToFeature
+                            });
+                    }
+
+                    geojson = L.geoJson(townsData, {
+                            style: style,
+                            onEachFeature: onEachFeature
+                    }).addTo(map);
+
+                    //map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+
+                    var legend = L.control({position: 'bottomright'});
+
+                    legend.onAdd = function (map) {
+
+                            var div = L.DomUtil.create('div', 'info legend'),
+                                    grades = [0, ranges.r0, ranges.r1, ranges.r2, ranges.r3, ranges.r4, ranges.r5],
+                                    labels = [],
+                                    from, to;
+
+                            for (var i = 0; i < grades.length-1; i++) {
+                                    from = grades[i];
+                                    to = grades[i + 1];
+
+                                    labels.push(
+                                            '<i style="background:' + getColor(from + .0000001) + '"></i> ' +
+                                            from + '&ndash;' + to);
+                            }
+
+                            div.innerHTML = labels.join('<br>');
+                            return div;
+                    };
+
+                    legend.addTo(map);
+                }//end createLeafMap
+	</script>
+        
+    <footer>
+            <span><strong>Today's Eco Tip: </strong><span id="ecoTip"><script>showTip();</script> </span>
+	</footer>
+    </body>
+</html>
